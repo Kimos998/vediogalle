@@ -15,29 +15,29 @@
   .gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* توسيط العناصر على الأفقي */
+  justify-content: center;
   align-items: flex-start;
   padding: 20px;
-  margin: 0 auto; /* لتوسيط المعرض على المحور الأفقي */
+  margin: 0 auto;
 }
 
 .video-container {
-  flex-basis: calc(100% / 3 - 20px); /* تقسيم العناصر على أساس الشاشات الكبيرة */
-  max-width: 400px; /* تعيين حد أقصى للعرض للحفاظ على تناسق التصميم */
-  margin: 10px; /* المسافة بين العناصر */
+  flex-basis: calc(100% / 3 - 20px);
+  max-width: 400px;
+  margin: 10px;
   box-sizing: border-box;
   border-radius: 20px;
 }
 
 @media screen and (max-width: 600px) {
   .video-container {
-    flex-basis: calc(50% - 20px); /* تقسيم العناصر على أساس الشاشات الصغيرة */
+    flex-basis: calc(50% - 20px);
   }
 }
 
 @media screen and (max-width: 400px) {
   .video-container {
-    flex-basis: calc(100% - 20px); /* تقسيم العناصر على أساس الشاشات الأصغر */
+    flex-basis: calc(100% - 20px);
   }
 }
 
@@ -47,13 +47,10 @@
     }
 
     .video-info {
-      background-color: #333;
       color: black;
       padding: 20px;
-      background: transparent; 
-      padding-left: 20px;
+      text-align: left;
       width: 90%;
-
     }
 
     video {
@@ -66,7 +63,6 @@
     }
 
     .back-button {
-      position: absolute;
       top: 20px;
       left: 20px;
       background-color: #333;
@@ -75,19 +71,18 @@
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      margin-top: 10px;
     }
-    
-    
-    h3,p {
-text-align: left;}
-  
+
+ h3,p {
+     text-align: left;
+}
 </style>
 </head>
 <body>
 <script src="https://sheetdb.io/handlebars.js"></script>
 
 <div class="gallery">
-
   <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=1">
     <video class="video-frame">
       <source src={{url}} type="video/mp4">
@@ -99,8 +94,7 @@ text-align: left;}
     </div>
   </div>
   
-  
-  
+  <!-- Video 2 -->
   <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=2">
     <video class="video-frame">
       <source src={{url}} type="video/mp4">
@@ -113,6 +107,7 @@ text-align: left;}
   </div>
   
   
+  <!-- Video 3 -->
   <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=3">
     <video class="video-frame">
       <source src={{url}} type="video/mp4">
@@ -125,6 +120,44 @@ text-align: left;}
   </div>
   
   
+  <!-- Video 4 -->
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=4">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
+  
+  <!-- Video 5 -->
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=5">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
+  
+   <!-- Video 6 -->
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=6">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
   
   <!-- Add more video containers as needed -->
 </div>
@@ -132,21 +165,20 @@ text-align: left;}
 <div class="full-screen-video" style="display: none;"></div>
 
 <script>
-  // تجد جميع العناصر
   const videos = document.querySelectorAll(".video-container");
   const gallery = document.querySelector(".gallery");
 
-videos.forEach(video => {
+videos.forEach((video, index) => {
+    const id = index + 1;
+    video.setAttribute("data-sheetdb-search", `id=${id}`);
+
     video.addEventListener("click", function () {
-        // إخفاء جميع العناصر
         gallery.style.display = "none";
 
-        // جلب العنوان والوصف
         const title = this.querySelector("h3").innerText;
         const descriptionFull = this.querySelector(".description-full").innerText;
         const videoUrl = this.querySelector("source").getAttribute("src");
 
-        // إنشاء العنصر الجديد لعرض الفيديو
         const videoPlayer = document.createElement("div");
         videoPlayer.className = "full-screen-video";
         videoPlayer.style.display = "flex";
@@ -175,9 +207,7 @@ videos.forEach(video => {
         backButton.className = "back-button";
         backButton.innerText = "Back to Home";
         backButton.addEventListener("click", function () {
-            // إظهار المعرض مرة أخرى عند النقر على زر العودة
             gallery.style.display = "flex";
-            // إزالة العنصر الجديد لعرض الفيديو
             document.body.removeChild(videoPlayer);
         });
 
@@ -186,18 +216,6 @@ videos.forEach(video => {
         videoPlayer.appendChild(backButton);
 
         document.body.appendChild(videoPlayer);
-    });
-
-    // Add event listener to "معرفة المزيد" button
-    const readMoreButton = video.querySelector(".read-more-button");
-    const descriptionShort = video.querySelector(".description-short");
-    const descriptionFull = video.querySelector(".description-full");
-
-    readMoreButton.addEventListener("click", function () {
-        // Toggle visibility of full description
-        descriptionShort.style.display = "none";
-        descriptionFull.style.display = "block";
-        readMoreButton.style.display = "none";
     });
 });
 </script>
