@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Screen Video</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      margin: 0 auto;
+    }
+
+    .video-container {
+      flex-basis: calc(100% / 3 - 20px);
+      max-width: 400px;
+      margin: 10px;
+      box-sizing: border-box;
+      border-radius: 20px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .video-container {
+        flex-basis: calc(50% - 20px);
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      .video-container {
+        flex-basis: calc(100% - 20px);
+      }
+    }
+
+    .video-frame {
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .video-info {
+      color: black;
+      padding: 20px;
+      text-align: left;
+      width: 90%;
+    }
+
+    video {
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      width: 90%;
+      padding:20px;
+      float: left;
+    }
+
+    .back-button {
+      top: 20px;
+      left: 20px;
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    h3,p {
+      text-align: left;
+    }
+
+    /* Adjusting full-screen-video for large screens */
+    @media screen and (min-width: 1200px) {
+      .full-screen-video {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 60%;
+        margin: auto;
+        padding: 20px;
+      }
+    }
+
+</style>
+</head>
+<body>
+<script src="https://sheetdb.io/handlebars.js"></script>
+
+<div class="gallery">
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=1">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
+  <!-- Add more video containers as needed -->
+</div>
+
+<!-- Full Screen Video Section -->
+<div class="full-screen-video" style="display: none;">
+  <!-- Placeholder for suggested videos -->
+  <div class="suggested-videos" style="flex-basis: 40%;">
+    <h2>Suggested Videos</h2>
+    <!-- Suggested video 1 -->
+    <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=7">
+      <video class="video-frame">
+        <source src={{url}} type="video/mp4">
+      </video>
+      <div class="video-info">
+        <h3>{{title}}</h3>
+        <p class="description-short">{{category}}</p>
+        <p class="description-full" style="display: none;">{{description}}</p>
+      </div>
+    </div>
+    <!-- Suggested video 2 -->
+    <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=8">
+      <video class="video-frame">
+        <source src={{url}} type="video/mp4">
+      </video>
+      <div class="video-info">
+        <h3>{{title}}</h3>
+        <p class="description-short">{{category}}</p>
+        <p class="description-full" style="display: none;">{{description}}</p>
+      </div>
+    </div>
+    <!-- Suggested video 3 -->
+    <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=9">
+      <video class="video-frame">
+        <source src={{url}} type="video/mp4">
+      </video>
+      <div class="video-info">
+        <h3>{{title}}</h3>
+        <p class="description-short">{{category}}</p>
+        <p class="description-full" style="display: none;">{{description}}</p>
+      </div>
+    </div>
+  </div>
+  <!-- Full Screen Video Player -->
+  <div class="video-player-container" style="flex-basis: 60%;"></div>
+</div>
+
+<script>
+  const videos = document.querySelectorAll(".video-container");
+  const gallery = document.querySelector(".gallery");
+
+  videos.forEach((video, index) => {
+      const id = index + 1;
+      video.setAttribute("data-sheetdb-search", `id=${id}`);
+
+      video.addEventListener("click", function () {
+          gallery.style.display = "none";
+
+          const title = this.querySelector("h3").innerText;
+          const descriptionFull = this.querySelector(".description-full").innerText;
+          const videoUrl = this.querySelector("source").getAttribute("src");
+
+          const videoPlayerContainer = document.querySelector(".video-player-container");
+          videoPlayerContainer.innerHTML = ''; // Clear previous content
+
+          const videoPlayer = document.createElement("div");
+          videoPlayer.className = "video-player";
+          videoPlayer.innerHTML = `
+              <video class="video-player" controls>
+                  <source src="${videoUrl}" type="video/mp4">
+              </video>
+              <div class="video-info" style="text-align: center;">
+                  <h3>${title}</h3>
+                  <p>${descriptionFull}</p>
+                  <button class="back-button">Back to Home</button>
+              </div>
+          `;
+          videoPlayerContainer.appendChild(videoPlayer);
+
+          // Event listener for back button
+          const backButton = videoPlayer.querySelector(".back-button");
+          backButton.addEventListener("click", function () {
+              gallery.style.display = "flex";
+              document.querySelector(".full-screen-video").style.display = "none";
+          });
+
+          document.querySelector(".full-screen-video").style.display = "flex";
+      });
+  });
+</script>
+</body>
+</html>
