@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Screen Video</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+    }
+
+  .gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* توسيط العناصر على الأفقي */
+  align-items: flex-start;
+  padding: 20px;
+  margin: 0 auto; /* لتوسيط المعرض على المحور الأفقي */
+}
+
+.video-container {
+  flex-basis: calc(100% / 3 - 20px); /* تقسيم العناصر على أساس الشاشات الكبيرة */
+  max-width: 400px; /* تعيين حد أقصى للعرض للحفاظ على تناسق التصميم */
+  margin: 10px; /* المسافة بين العناصر */
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .video-container {
+    flex-basis: calc(50% - 20px); /* تقسيم العناصر على أساس الشاشات الصغيرة */
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .video-container {
+    flex-basis: calc(100% - 20px); /* تقسيم العناصر على أساس الشاشات الأصغر */
+  }
+}
+
+    .video-frame {
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .video-info {
+      background-color: #333;
+      color: black;
+      padding: 20px;
+      background: transparent; 
+      padding-left: 20px;
+      width: 90%;
+
+    }
+
+    video {
+      position: relative;
+      display: inline-block;
+      vertical-align: top;
+      width: 90%;
+      padding:20px;
+      float: left;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    
+    
+    h3,p {
+text-align: left;}
+  
+</style>
+</head>
+<body>
+<script src="https://sheetdb.io/handlebars.js"></script>
+
+<div class="gallery">
+
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=1">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
+  
+  
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=2">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
+  
+  <div class="video-container" data-sheetdb-url="https://sheetdb.io/api/v1/zqrv0iabz2lzv" data-sheetdb-search="id=3">
+    <video class="video-frame">
+      <source src={{url}} type="video/mp4">
+    </video>
+    <div class="video-info">
+      <h3>{{title}}</h3>
+      <p class="description-short">{{category}}</p>
+      <p class="description-full" style="display: none;">{{description}}</p>
+    </div>
+  </div>
+  
+  
+  
+  <!-- Add more video containers as needed -->
+</div>
+
+<div class="full-screen-video" style="display: none;"></div>
+
+<script>
+  // تجد جميع العناصر
+  const videos = document.querySelectorAll(".video-container");
+  const gallery = document.querySelector(".gallery");
+
+videos.forEach(video => {
+    video.addEventListener("click", function () {
+        // إخفاء جميع العناصر
+        gallery.style.display = "none";
+
+        // جلب العنوان والوصف
+        const title = this.querySelector("h3").innerText;
+        const descriptionFull = this.querySelector(".description-full").innerText;
+        const videoUrl = this.querySelector("source").getAttribute("src");
+
+        // إنشاء العنصر الجديد لعرض الفيديو
+        const videoPlayer = document.createElement("div");
+        videoPlayer.className = "full-screen-video";
+        videoPlayer.style.display = "flex";
+        videoPlayer.style.flexDirection = "column";
+        videoPlayer.style.alignItems = "center";
+
+        const videoElement = document.createElement("video");
+        videoElement.className = "video-player";
+        videoElement.setAttribute("controls", "controls");
+        const sourceElement = document.createElement("source");
+        sourceElement.setAttribute("src", videoUrl);
+        sourceElement.setAttribute("type", "video/mp4");
+        videoElement.appendChild(sourceElement);
+
+        const videoInfo = document.createElement("div");
+        videoInfo.className = "video-info";
+        videoInfo.style.textAlign = "center";
+        const titleElement = document.createElement("h3");
+        titleElement.innerText = title;
+        const descriptionElement = document.createElement("p");
+        descriptionElement.innerText = descriptionFull;
+        videoInfo.appendChild(titleElement);
+        videoInfo.appendChild(descriptionElement);
+
+        const backButton = document.createElement("button");
+        backButton.className = "back-button";
+        backButton.innerText = "Back to Home";
+        backButton.addEventListener("click", function () {
+            // إظهار المعرض مرة أخرى عند النقر على زر العودة
+            gallery.style.display = "flex";
+            // إزالة العنصر الجديد لعرض الفيديو
+            document.body.removeChild(videoPlayer);
+        });
+
+        videoPlayer.appendChild(videoElement);
+        videoPlayer.appendChild(videoInfo);
+        videoPlayer.appendChild(backButton);
+
+        document.body.appendChild(videoPlayer);
+    });
+
+    // Add event listener to "معرفة المزيد" button
+    const readMoreButton = video.querySelector(".read-more-button");
+    const descriptionShort = video.querySelector(".description-short");
+    const descriptionFull = video.querySelector(".description-full");
+
+    readMoreButton.addEventListener("click", function () {
+        // Toggle visibility of full description
+        descriptionShort.style.display = "none";
+        descriptionFull.style.display = "block";
+        readMoreButton.style.display = "none";
+    });
+});
+</script>
+</body>
+</html>
